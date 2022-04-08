@@ -1,0 +1,35 @@
+---
+title: "R-Demo"
+author: "Lukáš Hejtmánek"
+date: "7 4 2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+source("functions/loading.R")
+df_movies <- load_movies_metadata(".", nrows = 5000)
+```
+
+```{r}
+summary(df_movies)
+```
+
+```{r}
+ggplot(df_movies, aes(budget, revenue)) +
+  geom_point() + geom_smooth(method="lm")
+
+df_movies %>%
+  filter(revenue > 100) %>%
+  ggplot(aes(is_comedy, revenue, fill=is_comedy)) +
+    geom_boxplot()
+```
+
+
+```{r}
+summary(lm(revenue ~ budget, data = df_movies))
+```
+
+```{r}
+t.test(revenue ~ is_comedy, data = filter(df_movies, revenue > 100))
+```
